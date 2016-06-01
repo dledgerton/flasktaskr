@@ -1,0 +1,113 @@
+{% extends "_base.html" %}
+{% block content %}
+
+<h1>Welcome to Produlr</h1>
+<h3>Production Scheduling App for Renewal By Andersen</h3>
+<br>
+<a href="/logout">Logout</a>
+<div class="add-task">
+  <h3>Add New Production Schedule:</h3>
+    <form action="{{ url_for('tasks.new_task') }}" method="post">
+      {{ form.csrf_token }}
+
+     
+      
+
+
+ <div class="datagrid">
+    <table>
+      <thead>
+        <tr>
+          <th width="100px"><strong>Shift</strong></th>
+          <th width="150px"><strong>Production Line</strong></th>
+          <th width="150px"><strong>Start Date</strong></th>
+          <th width="150px"><strong>Start Time</strong></th>
+          <th width="150px"><strong>End Date</strong></th>
+          <th width="150px"><strong>End Time</strong></th>          
+        </tr>
+      </thead>
+      
+        <tr>
+          <td>      <p>
+     
+      {{ form.WorkShift(placeholder="Work Shift") }}
+      <span class="error">
+        {% if form.WorkShift.errors %}
+          {% for error in form.WorkShift.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p>
+      <p></td>
+      <td>{{ form.ProductionLine(placeholder="Production Line") }}
+      <span class="error">
+        {% if form.ProductionLine.errors %}
+          {% for error in form.ProductionLine.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p>
+      </td>  
+      <td>
+        <p>
+      {{ form.start_date(placeholder="start date") }}
+      <span class="error">
+        {% if form.start_date.errors %}
+          {% for error in form.start_date.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p></td>
+      <td>
+            <p>
+      {{ form.start_time(placeholder="start time") }}
+      <span class="error">
+        {% if form.start_time.errors %}
+          {% for error in form.start_time.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p></td>
+      <td>
+            <p>
+      {{ form.end_date(placeholder="end date") }}
+      <span class="error">
+        {% if form.end_date.errors %}
+          {% for error in form.end_date.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p>
+      </td>
+      <td>
+        
+            <p>
+      {{ form.end_time(placeholder="end time") }}
+      <span class="error">
+        {% if form.end_time.errors %}
+          {% for error in form.end_time.errors %}
+            {{ error }}
+          {% endfor %}
+        {% endif %}
+      </span>
+      </p></td>
+        
+        
+
+
+        </tr>
+     </table>
+  </div>
+
+
+      <br>
+      <input class="btn btn-default" type="submit" value="Submit"></p>
+    </form>
+
+
+{% endblock %}
