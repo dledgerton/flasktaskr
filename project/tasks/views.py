@@ -7,6 +7,7 @@ from flask import flash, redirect, render_template, \
     request, session, url_for, Blueprint
 
 from .forms import AddTaskForm
+from .forms import AddScheduleForm
 from project import db
 from project.models import Task
 
@@ -53,6 +54,18 @@ def tasks():
     return render_template(
         'tasks.html',
         form=AddTaskForm(request.form),
+        open_tasks=open_tasks(),
+        closed_tasks=closed_tasks(),
+        username=session['name']
+    )
+
+
+@tasks_blueprint.route('/schedule/')
+@login_required
+def schedule():
+    return render_template(
+        'schedule.html',
+        form=AddScheduleForm(request.form),
         open_tasks=open_tasks(),
         closed_tasks=closed_tasks(),
         username=session['name']
