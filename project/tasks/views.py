@@ -10,6 +10,7 @@ from .forms import AddTaskForm
 from .forms import AddScheduleForm
 from project import db
 from project.models import Task
+from project.models import Schedule
 
 
 ################
@@ -17,6 +18,7 @@ from project.models import Task
 ################
 
 tasks_blueprint = Blueprint('tasks', __name__)
+schedule_blueprint = Blueprint('schedule',__name__)
 
 
 ##########################
@@ -44,6 +46,9 @@ def closed_tasks():
         status='0').order_by(Task.due_date.asc())
 
 
+def pending_schedule():
+    return db.session.query(Schedule)
+
 ################
 #### routes ####
 ################
@@ -66,9 +71,8 @@ def schedule():
     return render_template(
         'schedule.html',
         form=AddScheduleForm(request.form),
-        open_tasks=open_tasks(),
-        closed_tasks=closed_tasks(),
-        username=session['name']
+        username=session['name'],
+        pendingschedule = pending_schedule()
     )
 
 
@@ -97,6 +101,35 @@ def new_task():
         error=error,
         open_tasks=open_tasks(),
         closed_tasks=closed_tasks()
+    )
+
+
+@tasks_blueprint.route('/addschedule/', methods=['GET', 'POST'])
+@login_required
+def add_new_schedule():
+    error = None
+    form = AddScheduleForm(request.form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            new_schedule = Schedule(
+                form.WorkShift.data,
+                form.ProductionLine.data,
+                form.start_date.data,
+                form.start_time.data,
+                form.end_date.data,
+                form.end_time.data,
+                datetime.datetime.utcnow(),
+                session['user_id']
+            )
+            db.session.add(new_schedule)
+            db.session.commit()
+            flash('New schedule entry was successfully posted. Thanks.')
+            return redirect(url_for('tasks.schedule'))
+    return render_template(
+        'schedule.html',
+        form=form,
+        error=error,
+        pendingschedule = pending_schedule()
     )
 
 

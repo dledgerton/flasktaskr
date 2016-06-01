@@ -30,6 +30,36 @@ class Task(db.Model):
         return '<name {0}>'.format(self.name)
 
 
+class Schedule(db.Model):
+    
+    __tablename__ = "schedule"
+
+    schedule_id = db.Column(db.Integer, primary_key=True)
+    workshift = db.Column(db.String, nullable=False)
+    productionline = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.String, nullable=False)
+    start_time = db.Column(db.String, nullable=False)
+    end_date = db.Column(db.String, nullable=False)
+    end_time = db.Column(db.String, nullable=False)
+    posted_date = db.Column(db.Date, default=datetime.datetime.utcnow())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, workshift, productionline,start_date,start_time,end_date,end_time,posted_date, user_id):
+        self.workshift = workshift
+        self.productionline = productionline
+        self.start_date = start_date
+        self.start_time = start_time
+        self.end_date = end_date
+        self.end_time = end_time
+        self.posted_date = posted_date
+        self.user_id = user_id
+
+    def __repr__(self):
+        return '<name {0}>'.format(self.name)
+
+
+
+
 class User(db.Model):
 
     __tablename__ = 'users'
