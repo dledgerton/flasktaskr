@@ -67,7 +67,7 @@ def login():
                 session['role'] = user.role
                 session['name'] = user.name
                 flash('Welcome!')
-                return redirect(url_for('tasks.tasks'))
+                return redirect(url_for('schedule.schedule'))
             else:
                 error = 'Invalid username or password.'
     return render_template('login.html', form=form, error=error)
